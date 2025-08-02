@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Password Validation</title>
+</head>
+<body>
+  <h2>Sign Up Form</h2>
+  <label>Password: <input type="password" id="pass1" oninput="checkStrength()"></label><br>
+  <label>Confirm Password: <input type="password" id="pass2" oninput="checkMatch()"></label><br>
+  <p id="strengthMsg"></p>
+  <p id="matchMsg"></p>
+
+  <script>
+    function checkStrength() {
+      const pass = document.getElementById("pass1").value;
+      let msg = "Weak";
+      if (pass.length >= 8 && /[A-Z]/.test(pass) && /\d/.test(pass)) {
+        msg = "Strong";
+      } else if (pass.length >= 6) {
+        msg = "Medium";
+      }
+      document.getElementById("strengthMsg").innerText = "Strength: " + msg;
+    }
+
+    function checkMatch() {
+      const p1 = document.getElementById("pass1").value;
+      const p2 = document.getElementById("pass2").value;
+      const msg = p1 === p2 ? "Passwords match ✅" : "Passwords do not match ❌";
+      document.getElementById("matchMsg").innerText = msg;
+    }
+  </script>
+</body>
+</html>

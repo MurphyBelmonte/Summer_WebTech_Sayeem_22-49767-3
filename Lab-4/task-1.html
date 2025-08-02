@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Counter</title>
+  <style>
+    button { margin: 5px; font-size: 18px; }
+    #count { font-size: 24px; }
+  </style>
+</head>
+<body>
+  <h2>Counter</h2>
+  <div id="count">0</div>
+  <button onclick="changeCount(1)">Increment</button>
+  <button onclick="changeCount(-1)">Decrement</button>
+
+  <script>
+    let count = 0;
+    function changeCount(value) {
+      count += value;
+      document.getElementById("count").innerText = count;
+    }
+  </script>
+</body>
+</html>
