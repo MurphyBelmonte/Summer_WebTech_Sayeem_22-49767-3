@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Form and Image Toggle</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f2f5;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+    }
+
+    h2 {
+      margin-top: 40px;
+    }
+
+    /* Form Styling */
+    form {
+      background: white;
+      padding: 20px;
+      margin-top: 20px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      width: 300px;
+    }
+
+    input, select {
+      width: 95%;
+      margin-bottom: 15px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      border-radius: 6px;
+      font-size: 14px;
+      margin: 5px;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    .error {
+      color: red;
+      font-size: 0.9em;
+      margin-top: -10px;
+      margin-bottom: 10px;
+    }
+
+    /* Image Section */
+    #imageBox {
+      margin-top: 40px;
+      text-align: center;
+    }
+
+    #myImage {
+      width: 300px;
+      outline: 5px solid #333;
+      outline-offset: 10px;
+      border-radius: 10px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Course Registration Form</h2>
+  <form id="myForm">
+    <input type="text" id="name" placeholder="Full Name">
+    <div class="error" id="nameError"></div>
+
+    <input type="email" id="email" placeholder="Email">
+    <div class="error" id="emailError"></div>
+
+    <input type="number" id="age" placeholder="Age">
+    <div class="error" id="ageError"></div>
+
+    <select id="course">
+      <option value="">Select Course</option>
+      <option value="HTML">HTML</option>
+      <option value="CSS">CSS</option>
+      <option value="JavaScript">JavaScript</option>
+    </select>
+
+    <button type="submit">Submit</button>
+  </form>
+
+  <h2>Toggle Image</h2>
+  <div id="imageBox">
+    <button onclick="showImage()">Show Image</button>
+    <button onclick="hideImage()">Hide Image</button>
+    <br><br>
+    <img id="myImage" src="cat.png" alt="Sample Image">
+  </div>
+
+  <script>
+    // Form Validation
+    document.getElementById('myForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      // Clear errors
+      document.getElementById('nameError').textContent = '';
+      document.getElementById('emailError').textContent = '';
+      document.getElementById('ageError').textContent = '';
+
+      let hasError = false;
+
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const age = document.getElementById('age').value.trim();
+
+      if (name.length < 3) {
+        document.getElementById('nameError').textContent = 'Name must be at least 3 characters';
+        hasError = true;
+      }
+
+      if (!email.includes('@') || email.length < 5) {
+        document.getElementById('emailError').textContent = 'Invalid email address';
+        hasError = true;
+      }
+
+      if (age === '' || isNaN(age) || age < 10) {
+        document.getElementById('ageError').textContent = 'Enter a valid age (10 or older)';
+        hasError = true;
+      }
+
+      if (!hasError) {
+        alert('Form submitted successfully!');
+      }
+    });
+
+    // Image Toggle Functions
+    function showImage() {
+      document.getElementById('myImage').style.display = 'block';
+    }
+
+    function hideImage() {
+      document.getElementById('myImage').style.display = 'none';
+    }
+  </script>
+
+</body>
+</html>
