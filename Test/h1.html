@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title> Form Validate</title>
+</head>
+
+<body>
+<form onsubmit = "return validateForm()">
+<br><br>
+First Name: <input type="text" id="fname"><br><br>
+Last Name: <input type="text" id="lname"><br><br>
+<input type="submit" value="Submit">
+</form>
+
+<script>
+function validateForm()
+{
+  let fname = document.getElementById("fname").value.trim();
+  let lname = document.getElementById("lname").value.trim();
+  if(fname.length < 2 || lname.length < 2)
+   { 
+      alert("First name or Last name too short");
+      return false;
+   }
+   return true;
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Age Verification</title>
+</head>
+<body>
+<form>
+Enter age: <input type="text" id="age">
+</form>
+<p id="message"></p>
+<script>
+const ageInput = document.getElementById("age");
+const msg = document.getElementById("message");
+ageInput.addEventListener("input", () => {
+let age = parseInt(ageInput.value);
+if(age<40)
+{
+msg.textContent = "You need to be atleast 40 years ago";
+msg.style.color = "black";
+}
+else if(age>=40 && age<=50)
+{
+msg.textContent = "Perfect age";
+msg.style.color = "black";
+}
+else if(age>50)
+{
+msg.textContent = "Top level members";
+msg.style.color = "red";
+}
+})
+</script>
+</body>
+</html>
