@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Homepage (HTML) + PHP Session</title>
+    
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <h1>Homepage</h1>
+        <div id="userBadge" class="muted"></div>
+      </header>
+
+      <!-- LOGIN VIEW -->
+      <section id="loginView" class="card">
+        <h2>Log in</h2>
+        <p class="muted">Any username</p>
+        <label for="username">Username</label>
+        <input id="username" type="text" placeholder="e.g. Sayeem" />
+
+        <label for="password">Password</label>
+        <input id="password" type="password" placeholder="" />
+
+        <div class="row" style="margin-top:12px; justify-content: space-between;">
+          <label class="row" style="gap:8px;">
+            <input type="checkbox" id="remember" />
+            <span>Remember (7 days)</span>
+          </label>
+          <button class="btn btn-primary" id="loginBtn">Log in</button>
+        </div>
+      </section>
+
+      <!-- HOME VIEW (only when PHP session is active) -->
+      <section id="homeView" class="card hidden">
+        <h2>Welcome back</h2>
+        <p id="welcomeText" class="muted">You are logged in.</p>
+        <div class="row" style="gap:8px; margin-top:10px;">
+          <button class="btn btn-primary" id="logoutBtn">Log out</button>
+          <button class="btn btn-outline" id="showCookiesBtn">Show cookies</button>
+        </div>
+        <pre id="cookieDump" class="card hidden" style="margin-top:12px; white-space: pre-wrap; overflow-wrap: anywhere;"></pre>
+        <footer>
+          PHP stores your <code>username</code> on the server and uses a session cookie (like <code>PHPSESSID</code>).
+        </footer>
+      </section>
+    </div>
+
+    <script>
+      async function checkSession() {
+        const res = await fetch('session.php', { credentials: 'include' });
+        const data = await res.json();
+        const loginView = document.getElementById('loginView');
+        const homeView = document.getElementById('homeView');
+        const userBadge = document.getElementById('userBadge');
+        const welcomeText = document.getElementById('welcomeText');
+
+        if (data.logged_in) {
+          loginView.classList.add('hidden');
+          homeView.classList.remove('hidden');
+          userBadge.textContent = data.username ? `Signed in as ${data.username}` : 'Signed in';
+          welcomeText.textContent = data.username ? `Welcome, ${data.username}!` : 'You are logged in.';
+        } else {
+          homeView.classList.add('hidden');
+          loginView.classList.remove('hidden');
+          userBadge.textContent = '';
+        }
+      }
+
+      document.getElementById('loginBtn').addEventListener('click', async () => {
+        const username = document.getElementById('username').value.trim();
+        const remember = document.getElementById('remember').checked;
+        if (!username) { alert('Please enter a username'); return; }
+
+        const form = new URLSearchParams();
+        form.set('username', username);
+        form.set('remember', remember ? '1' : '0');
+
+        const res = await fetch('login.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: form,
+          credentials: 'include'
+        });
+        const data = await res.json();
+        if (!data.ok) { alert(data.error || 'Login failed'); return; }
+        await checkSession();
+      });
+
+      document.getElementById('logoutBtn').addEventListener('click', async () => {
+        await fetch('logout.php', { method: 'POST', credentials: 'include' });
+        await checkSession();
+      });
+
+      document.getElementById('showCookiesBtn').addEventListener('click', () => {
+        const dump = document.getElementById('cookieDump');
+        dump.textContent = document.cookie || '(no cookies)';
+        dump.classList.toggle('hidden');
+      });
+
+      // First paint
+      checkSession();
+    </script>
+  </body>
+</html>
